@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "todos")
-public class Todos extends Auditable{
+public class Todos extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long todoid;
@@ -65,4 +65,5 @@ public class Todos extends Auditable{
     public void setUser(User user) {
         this.user = user;
     }
+
 }
