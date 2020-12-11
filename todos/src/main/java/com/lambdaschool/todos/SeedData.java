@@ -101,6 +101,7 @@ public class SeedData implements CommandLineRunner
         List<String> userEmailList = new ArrayList<>();
         List<String> userTodoDescription = new ArrayList<>();
 
+        //Loop through Fakers and create data!
         for (int i = 0; i < 100; i++) {
             userNamesList.add(userNameFaker.name().username());
             userEmailList.add(userEmailFaker.letterify("??????@gmail.com"));
