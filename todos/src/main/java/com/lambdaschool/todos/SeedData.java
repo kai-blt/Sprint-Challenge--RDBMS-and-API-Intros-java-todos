@@ -1,5 +1,8 @@
 package com.lambdaschool.todos;
 
+import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
 import com.lambdaschool.todos.models.Todos;
 import com.lambdaschool.todos.models.User;
 import com.lambdaschool.todos.services.UserService;
@@ -7,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * SeedData puts both known and random data into the database. It implements CommandLineRunner.
@@ -81,5 +86,43 @@ public class SeedData implements CommandLineRunner
                            "password",
                            "misskitty@school.lambda");
         userService.save(u5);
+
+
+        //Implementation of Java Faker
+
+        //Create a name faker instance with english locale
+        Faker userNameFaker = new Faker(new Locale("en-US"));
+        FakeValuesService userEmailFaker = new FakeValuesService(new Locale("en-US"),  new RandomService());
+        FakeValuesService userPasswordFaker = new FakeValuesService(new Locale("en-US"), new RandomService());
+
+        //Gen 100 names and passwords adding it to respective sets
+        List<String> userNamesList = new ArrayList<>();
+        List<String> userPasswordList = new ArrayList<>();
+        List<String> userEmailList = new ArrayList<>();
+        List<String> userTodoDescription = new ArrayList<>();
+
+        //Loop through Fakers and create data!
+        for (int i = 0; i < 100; i++) {
+            userNamesList.add(userNameFaker.name().username());
+            userEmailList.add(userEmailFaker.letterify("??????@gmail.com"));
+            userPasswordList.add(userPasswordFaker.bothify("?#?#?#?#?#?#?"));
+            userTodoDescription.add(userNameFaker.dune().title());
+        }
+
+        //Loop through userNames and gen users
+        for (int j = 0; j < userNamesList.size(); j++) {
+            //Create a new user object
+            User newUser = new User();
+            newUser.setUsername(userNamesList.get(j));
+            newUser.setPassword(userPasswordList.get(j));
+            newUser.setPrimaryemail(userEmailList.get(j));
+
+            //Add Todos
+            newUser.getTodos().add(new Todos(newUser, userTodoDescription.get(j)));
+
+            //Save the users
+            userService.save(newUser);
+        }
+
     }
 }
