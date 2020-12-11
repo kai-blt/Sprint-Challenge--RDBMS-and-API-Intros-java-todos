@@ -119,7 +119,7 @@ public class SeedData implements CommandLineRunner
             //Add Todos
             newUser.getTodos().add(new Todos(newUser, userTodoDescription.get(j)));
 
-            //Save the user
+            //Save the users
             userService.save(newUser);
         }
 
